@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: ldap-server
+  name: ldap-server
+spec:
+  ports:
+    - name: "389"
+      port: 389
+      targetPort: 389
+    - name: "636"
+      port: 636
+      targetPort: 636
+  externalIPs:
+    - 10.1.0.4
+  selector:
+    app: ldap-server

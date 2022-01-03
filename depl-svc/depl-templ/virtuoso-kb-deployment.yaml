@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: virtuoso-kb
+  name: virtuoso-kb
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: virtuoso-kb
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: virtuoso-kb
+    spec:
+      nodeSelector:
+          kubernetes.io/hostname: cvgsolvm01    
+      containers:
+        - env:
+            - name: DEFAULT_GRAPH
+              value: http://www.example.com/my-graph
+            - name: SPARQL_UPDATE
+              value: "true"
+          image: tenforce/virtuoso:1.3.1-virtuoso7.2.1
+          name: virtuoso-kb
+          ports:
+            - containerPort: 8890
+            - containerPort: 1111
+          resources: {}
+          volumeMounts:
+            - mountPath: /root/servicemap
+              name: virtuoso-kb-hostpath0
+            - mountPath: /data
+              name: virtuoso-storage
+      restartPolicy: Always
+      volumes:
+        - hostPath:
+            path: /mnt/my_nfs_volumes/snap4city-docker/DataCity-Small/servicemap-conf
+          name: virtuoso-kb-hostpath0
+        - name: virtuoso-storage
+          hostPath:
+            path: /tmp/kb-data

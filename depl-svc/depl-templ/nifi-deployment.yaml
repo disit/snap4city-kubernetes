@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: nifi
+  name: nifi
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nifi
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: nifi
+    spec:
+      nodeSelector:
+          kubernetes.io/hostname: cvgsolvm02    
+      containers:
+        - env:
+            - name: NIFI_WEB_HTTP_PORT
+              value: "8080"
+          image: apache/nifi:1.9.2
+          name: nifi
+          ports:
+            - containerPort: 8080
+            - containerPort: 1030
+          resources: {}
+          volumeMounts:
+            - mountPath: /opt/nifi/nifi-current/extensions
+              name: nifi-hostpath0
+            - mountPath: /opt/nifi/nifi-current/conf
+              name: nifi-hostpath1
+      restartPolicy: Always
+      volumes:
+        - hostPath:
+            path: /mnt/my_nfs_volumes/snap4city-docker/DataCity-Small/nifi/extensions
+          name: nifi-hostpath0
+        - hostPath:
+            path: /mnt/my_nfs_volumes/snap4city-docker/DataCity-Small/nifi/conf
+          name: nifi-hostpath1

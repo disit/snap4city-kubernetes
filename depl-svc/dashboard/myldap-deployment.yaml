@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: myldap
+  name: myldap
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: myldap
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: myldap
+    spec:
+      nodeSelector:
+          kubernetes.io/hostname: cvgsolvm03    
+      containers:
+        - env:
+            - name: PHPLDAPADMIN_LDAP_HOSTS
+              value: ldap-server
+          image: osixia/phpldapadmin
+          name: myldap
+          ports:
+            - containerPort: 443
+          resources: {}
+      restartPolicy: Always

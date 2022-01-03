@@ -1,0 +1,62 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: orionbrokerfilter
+  name: orionbrokerfilter
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: orionbrokerfilter
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: orionbrokerfilter
+    spec:
+      containers:
+        - env:
+            - name: JAVA_OPTS
+              value: -DlogFileFolder=/usr/local/tomcat/logs -Dmytruststorepass=password -Dmykeystorepass=password
+            - name: connection.timeout
+              value: "10000"
+            - name: spring.delegation_endpoint
+              value: http://dashboard/datamanager/api/v1/apps
+            - name: spring.elapsingcache.minutes
+              value: "3"
+            - name: spring.openidconnect.clientid
+              value: orionfilter
+            - name: spring.openidconnect.password
+              value: Sl9.wrE@k
+            - name: spring.openidconnect.token_endpoint
+              value: http://dashboard/auth/realms/master/protocol/openid-connect/token
+            - name: spring.openidconnect.username
+              value: userrootadmin
+            - name: spring.orionbroker_endpoint
+              value: http://10.1.0.4:1026
+            - name: spring.ownership_endpoint
+              value: http://dashboard/ownership-api/v1/list
+            - name: spring.prefixelementID
+              value: Organization:iotobsf
+            - name: spring.profiles.active
+              value: deploy
+          image: disitlab/orionbrokerfilter:v0
+          name: orionbrokerfilter
+          ports:
+            - containerPort: 8443
+          resources: {}
+          volumeMounts:
+            - mountPath: /usr/local/tomcat/logs/orionbrokerfilter
+              name: orionbrokerfilter-hostpath0
+            - mountPath: /usr/local/tomcat/credentials
+              name: orionbrokerfilter-hostpath1
+      restartPolicy: Always
+      volumes:
+        - hostPath:
+            path: /mnt/my_nfs_volumes/snap4city-docker/DataCity-Small/orionbrokerfilter-logs
+          name: orionbrokerfilter-hostpath0
+        - hostPath:
+            path: /mnt/my_nfs_volumes/snap4city-docker/DataCity-Small/orionbrokerfilter-conf
+          name: orionbrokerfilter-hostpath1

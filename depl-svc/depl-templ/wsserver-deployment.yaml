@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: wsserver
+  name: wsserver
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: wsserver
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: wsserver
+    spec:
+      nodeSelector:
+          kubernetes.io/hostname: cvgsolvm03 
+      containers:
+        - image: disitlab/websocketserver:v2
+          name: wsserver
+          ports:
+            - containerPort: 9000
+          resources: {}
+          volumeMounts:
+            - mountPath: /websocketserver/conf
+              name: wsserver-hostpath0
+      restartPolicy: Always
+      volumes:
+        - hostPath:
+            path: /mnt/my_nfs_volumes/snap4city-docker/DataCity-Small/dashboard-builder-conf
+          name: wsserver-hostpath0

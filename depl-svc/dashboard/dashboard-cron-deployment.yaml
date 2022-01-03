@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: dashboard-cron
+  name: dashboard-cron
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: dashboard-cron
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: dashboard-cron
+    spec:
+      nodeSelector:
+          kubernetes.io/hostname: cvgsolvm03    
+      containers:
+        - args:
+            - /bin/sh
+            - -c
+            - crontab /crontab; cron -f
+          image: disitlab/dashboard-builder:v4
+          name: dashboard-cron
+          resources: {}
+          volumeMounts:
+            - mountPath: /var/www/html/dashboardSmartCity/conf
+              name: dashboard-cron-hostpath0
+            - mountPath: /crontab
+              name: dashboard-cron-hostpath1
+      restartPolicy: Always
+      volumes:
+        - hostPath:
+            path: /mnt/my_nfs_volumes/snap4city-docker/DataCity-Small/dashboard-builder-conf
+          name: dashboard-cron-hostpath0
+        - hostPath:
+            path: /mnt/my_nfs_volumes/snap4city-docker/DataCity-Small/dashboard-cron-conf/crontab
+          name: dashboard-cron-hostpath1

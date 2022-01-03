@@ -1,0 +1,73 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: personaldata
+  name: personaldata
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: personaldata
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: personaldata
+    spec:
+      nodeSelector:
+          kubernetes.io/hostname: cvgsolvm02 
+      containers:
+        - env:
+            - name: config.grp.authentication.clientid
+              value: js-grp-client
+            - name: config.kpi.authentication.clientid
+              value: js-kpi-client
+            - name: config.kpi.dictionary
+              value: http://dashboard/processloader/api/dictionary/
+            - name: config.kpi.organizationlist
+              value: '["Organization"]'
+            - name: grp.url
+              value: http://dashboard/datamanager/grp/?id=%d
+            - name: grpsensors.datasource.url
+              value: http://dashboard/dashboardSmartCity/api/sensors.php
+            - name: kafka.bootstrapAddress
+              value: kafka:9092
+            - name: kafka.prefixTopic
+              value: kpi-
+            - name: kafka.sendMessages
+              value: "true"
+            - name: logFileFolder
+            - name: profiledb.datasource.password
+              value: passwordx
+            - name: profiledb.datasource.url
+              value: jdbc:mysql://dashboarddb:3306/profiledb
+            - name: profiledb.datasource.username
+              value: user
+            - name: spring.ldap.basicdn
+              value: dc=ldap,dc=organization,dc=com
+            - name: spring.ldap.managerdn
+              value: cn=admin,dc=ldap,dc=organization,dc=com
+            - name: spring.ldap.password
+              value: secret
+            - name: spring.ldap.url
+              value: ldap://ldap-server:389
+            - name: spring.openidconnect.userinfo_endpoint
+              value: http://dashboard/auth/
+            - name: spring.openidconnect.userinfo_endpoint_test
+            - name: spring.profiles.active
+              value: deploy
+          image: disitlab/personaldata:v2
+          name: personaldata
+          ports:
+            - containerPort: 8080
+          resources: {}
+          volumeMounts:
+            - mountPath: /datamanager
+              name: personaldata-hostpath0
+      restartPolicy: Always
+      volumes:
+        - hostPath:
+            path: /mnt/my_nfs_volumes/snap4city-docker/DataCity-Small/datamanager-logs
+          name: personaldata-hostpath0

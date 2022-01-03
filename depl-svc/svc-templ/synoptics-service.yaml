@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: synoptics
+  name: synoptics
+spec:
+  ports:
+    - name: "3001"
+      port: 3001
+      targetPort: 3001
+    - name: "3002"
+      port: 3002
+      targetPort: 3002
+  externalIPs:
+    - 10.1.0.4
+  selector:
+    app: synoptics

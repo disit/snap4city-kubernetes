@@ -1,0 +1,18 @@
+version: "3"
+
+services:
+  oriond:
+    image: fiware/orion
+    restart: always
+    ports:
+      - "1026:1026"
+    depends_on:
+      - mongod
+    command: -dbhost 10.1.0.4:27017
+
+  mongod:
+    image: mongo:4.4
+    restart: always
+    ports:
+      - "27017:27017"
+    command: --nojournal

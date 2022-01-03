@@ -1,0 +1,96 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: dashboarddb
+  name: dashboarddb
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: dashboarddb
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: dashboarddb
+    spec:
+      containers:
+        - env:
+            - name: MYSQL_ALLOW_EMPTY_PASSWORD
+              value: "no"
+            - name: MYSQL_DATABASE
+              value: Dashboard
+            - name: MYSQL_PASSWORD
+              value: passwordx
+            - name: MYSQL_ROOT_PASSWORD
+              value: rootpwd
+            - name: MYSQL_USER
+              value: user
+            - name: TZ
+              value: Europe/Rome
+          image: mariadb
+          name: dashboarddb
+          ports:
+            - containerPort: 3306
+          resources: {}
+          volumeMounts:
+            - name: dashboarddb-storage
+              mountPath: /var/lib/mysql
+            - mountPath: /docker-entrypoint-initdb.d/0_init.sql
+              name: dashboarddb-hostpath1
+            - mountPath: /docker-entrypoint-initdb.d/1_init.sql
+              name: dashboarddb-hostpath2
+            - mountPath: /docker-entrypoint-initdb.d/2_init.sql
+              name: dashboarddb-hostpath3
+            - mountPath: /docker-entrypoint-initdb.d/3_init.sql
+              name: dashboarddb-hostpath4
+            - mountPath: /docker-entrypoint-initdb.d/4_init.sql
+              name: dashboarddb-hostpath5
+            - mountPath: /docker-entrypoint-initdb.d/5_init.sql
+              name: dashboarddb-hostpath6
+            - mountPath: /docker-entrypoint-initdb.d/6_init.sql
+              name: dashboarddb-hostpath7
+            - mountPath: /docker-entrypoint-initdb.d/7_init.sql
+              name: dashboarddb-hostpath8
+            - mountPath: /docker-entrypoint-initdb.d/8_init.sql
+              name: dashboarddb-hostpath9
+            - mountPath: /docker-entrypoint-initdb.d/9_init.sql
+              name: dashboarddb-hostpath10
+      restartPolicy: Always
+      volumes:
+        - name: dashboarddb-storage
+          persistentVolumeClaim:
+            claimName: dashboarddb-pv-claim
+        - hostPath:
+            path: /mnt/my_nfs_volumes/snap4city-docker/DataCity-Small/database/dashboard.sql
+          name: dashboarddb-hostpath1
+        - hostPath:
+            path: /mnt/my_nfs_volumes/snap4city-docker/DataCity-Small/database/dashboard-wizard-min.sql
+          name: dashboarddb-hostpath2
+        - hostPath:
+            path: /mnt/my_nfs_volumes/snap4city-docker/DataCity-Small/database/dashboard-menu.sql
+          name: dashboarddb-hostpath3
+        - hostPath:
+            path: /mnt/my_nfs_volumes/snap4city-docker/DataCity-Small/database/dashboard-mobmenu.sql
+          name: dashboarddb-hostpath4
+        - hostPath:
+            path: /mnt/my_nfs_volumes/snap4city-docker/DataCity-Small/database/profiledb.sql
+          name: dashboarddb-hostpath5
+        - hostPath:
+            path: /mnt/my_nfs_volumes/snap4city-docker/DataCity-Small/database/notificator.sql
+          name: dashboarddb-hostpath6
+        - hostPath:
+            path: /mnt/my_nfs_volumes/snap4city-docker/DataCity-Small/database/iot-directory.sql
+          name: dashboarddb-hostpath7
+        - hostPath:
+            path: /mnt/my_nfs_volumes/snap4city-docker/DataCity-Small/database/servicemap.sql
+          name: dashboarddb-hostpath8
+        - hostPath:
+            path: /mnt/my_nfs_volumes/snap4city-docker/DataCity-Small/database/superservicemap.sql
+          name: dashboarddb-hostpath9
+        - hostPath:
+            path: /mnt/my_nfs_volumes/snap4city-docker/DataCity-Small/database/processloader.sql
+          name: dashboarddb-hostpath10
+                                                                       

@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: servicemap
+  name: servicemap
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: servicemap
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: servicemap
+    spec:
+      containers:
+        - image: disitlab/servicemap:v1
+          name: servicemap
+          ports:
+            - containerPort: 8080
+          resources: {}
+          volumeMounts:
+            - mountPath: /root/servicemap
+              name: servicemap-hostpath0
+            - mountPath: /root/iot-log2
+              name: servicemap-hostpath1
+            - mountPath: /root/usr/share/tomcat7/iot-config/
+              name: servicemap-hostpath2
+            - mountPath: /usr/local/tomcat/conf/tomcat-users.xml
+              name: servicemap-hostpath3
+            - mountPath: /usr/local/tomcat/settings.xml
+              name: servicemap-hostpath4
+      restartPolicy: Always
+      volumes:
+        - hostPath:
+            path: /mnt/my_nfs_volumes/snap4city-docker/DataCity-Small/servicemap-conf
+          name: servicemap-hostpath0
+        - hostPath:
+            path: /mnt/my_nfs_volumes/snap4city-docker/DataCity-Small/servicemap-iot-conf/logs
+          name: servicemap-hostpath1
+        - hostPath:
+            path: /mnt/my_nfs_volumes/snap4city-docker/DataCity-Small/servicemap-iot-conf
+          name: servicemap-hostpath2
+        - hostPath:
+            path: /mnt/my_nfs_volumes/snap4city-docker/DataCity-Small/servicemap-conf/tomcat-users.xml
+          name: servicemap-hostpath3
+        - hostPath:
+            path: /mnt/my_nfs_volumes/snap4city-docker/DataCity-Small/servicemap-superservicemap-conf/settings.xml
+          name: servicemap-hostpath4

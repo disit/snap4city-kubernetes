@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: dashboard-backend
+  name: dashboard-backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: dashboard-backend
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: dashboard-backend
+    spec:
+      nodeSelector:
+          kubernetes.io/hostname: cvgsolvm03    
+      containers:
+        - image: disitlab/dashboard-backend:v0
+          name: dashboard-backend
+          resources: {}
+          volumeMounts:
+            - mountPath: /usr/app/config.properties
+              name: dashboard-backend-hostpath0
+      restartPolicy: Always
+      volumes:
+        - hostPath:
+            path: /mnt/my_nfs_volumes/snap4city-docker/DataCity-Small/dashboard-backend-conf/config.properties
+          name: dashboard-backend-hostpath0

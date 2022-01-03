@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: myldap
+  name: myldap
+spec:
+  ports:
+    - name: "6443"
+      port: 6443
+      targetPort: 443
+  selector:
+    app: myldap

@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: iotapp-nr1
+  name: iotapp-nr1
+spec:
+  ports:
+    - name: "1880"
+      port: 1880
+      targetPort: 1880
+  externalIPs:
+    - 10.1.0.4
+  selector:
+    app: iotapp-nr1

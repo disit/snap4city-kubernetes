@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: orionbrokerfilter
+  name: orionbrokerfilter
+spec:
+  ports:
+    - name: "8443"
+      port: 8443
+      targetPort: 8443
+  externalIPs:
+    - 10.1.0.4
+  selector:
+    app: orionbrokerfilter

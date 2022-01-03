@@ -1,0 +1,92 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: dashboard
+  name: dashboard
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: dashboard
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: dashboard
+    spec:
+      nodeSelector:
+          kubernetes.io/hostname: cvgsolvm03    
+      containers:
+        - env:
+            - name: OWN_DB_HOST
+              value: dashboarddb
+            - name: OWN_DB_PWD
+              value: passwordx
+            - name: OWN_DB_USER
+              value: user
+            - name: OWN_LDAPBASEDN
+              value: dc=ldap,dc=organization,dc=com
+            - name: OWN_LDAPSERVER
+              value: ldap-server
+            - name: OWN_SSO_USERINFO_ENDPOINT
+              value: http://dashboard/auth/realms/master/protocol/openid-connect/userinfo
+          image: disitlab/dashboard-builder:v4
+          name: dashboard
+          ports:
+            - containerPort: 80
+          resources: {}
+          volumeMounts:
+            - mountPath: /var/www/html/dashboardSmartCity/conf
+              name: dashboard-hostpath0
+            - mountPath: /var/www/html/notificator/conf
+              name: dashboard-hostpath1
+            - mountPath: /var/www/html/iot-directory/conf
+              name: dashboard-hostpath2
+            - mountPath: /var/www/certificate
+              name: dashboard-hostpath3
+            - mountPath: /var/www/log
+              name: dashboard-hostpath4
+            - mountPath: /etc/apache2/conf-virtualhost/proxy.conf
+              name: dashboard-hostpath5
+            - mountPath: /var/www/html/processloader/config.php
+              name: dashboard-hostpath6
+            - mountPath: /var/www/html/processloader/external_service.php
+              name: dashboard-hostpath7
+            - mountPath: /var/www/html/ownership-api/config.php
+              name: dashboard-hostpath8
+            - mountPath: /var/www/html/dashboardSmartCity/img
+              name: dashboard-img
+      restartPolicy: Always
+      volumes:
+        - hostPath:
+            path: /mnt/my_nfs_volumes/snap4city-docker/DataCity-Small/dashboard-builder-conf
+          name: dashboard-hostpath0
+        - hostPath:
+            path: /mnt/my_nfs_volumes/snap4city-docker/DataCity-Small/notificator-conf
+          name: dashboard-hostpath1
+        - hostPath:
+            path: /mnt/my_nfs_volumes/snap4city-docker/DataCity-Small/iot-directory-conf
+          name: dashboard-hostpath2
+        - hostPath:
+            path: /mnt/my_nfs_volumes/snap4city-docker/DataCity-Small/iot-directory-certificate
+          name: dashboard-hostpath3
+        - hostPath:
+            path: /mnt/my_nfs_volumes/snap4city-docker/DataCity-Small/iot-directory-log
+          name: dashboard-hostpath4
+        - hostPath:
+            path: /mnt/my_nfs_volumes/snap4city-docker/DataCity-Small/apache-proxy.conf
+          name: dashboard-hostpath5
+        - hostPath:
+            path: /mnt/my_nfs_volumes/snap4city-docker/DataCity-Small/processloader-conf/config.php
+          name: dashboard-hostpath6
+        - hostPath:
+            path: /mnt/my_nfs_volumes/snap4city-docker/DataCity-Small/processloader-conf/external_service.php
+          name: dashboard-hostpath7
+        - hostPath:
+            path: /mnt/my_nfs_volumes/snap4city-docker/DataCity-Small/ownership-conf/config.php
+          name: dashboard-hostpath8
+        - hostPath:
+            path: /tmp/img
+          name: dashboard-img

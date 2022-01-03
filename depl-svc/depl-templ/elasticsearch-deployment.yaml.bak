@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: elasticsearch
+  name: elasticsearch
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: elasticsearch
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: elasticsearch
+    spec:
+      nodeSelector:
+          kubernetes.io/hostname: cvgsolvm03 
+      containers:
+        - env:
+            - name: ES_JAVA_OPTS
+              value: -Xms96m -Xmx96m
+            - name: discovery.type
+              value: single-node
+            - name: path.repo
+              value: /elastic-bkup
+          image: elasticsearch:6.8.5
+          name: elasticsearch
+          ports:
+            - containerPort: 9200
+          resources:
+            requests:
+              memory: "200Mi"
+              cpu: "10m"
+            limits:
+              memory: "400Mi"
+              cpu: "250m"
+          volumeMounts:
+            - mountPath: /usr/share/elasticsearch/data
+              name: elastic-storage
+            - mountPath: /elastic-bkup
+              name: elastic-backup
+      restartPolicy: Always
+      volumes:
+        - name: elastic-storage
+          hostPath:
+            path: /tmp/elk-data
+        - name: elastic-backup
+          hostPath:
+            path: /tmp/elk-bkup
+

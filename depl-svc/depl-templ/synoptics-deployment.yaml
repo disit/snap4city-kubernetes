@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: synoptics
+  name: synoptics
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: synoptics
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: synoptics
+    spec:
+      containers:
+        - image: disitlab/synoptics:v0
+          name: synoptics
+          ports:
+            - containerPort: 3001
+            - containerPort: 3002
+          resources: {}
+          volumeMounts:
+            - mountPath: /usr/src/synoptics/new-config.js
+              name: synoptics-hostpath0
+            - mountPath: /usr/src/synoptics/v2/new-config.js
+              name: synoptics-hostpath1
+      restartPolicy: Always
+      volumes:
+        - hostPath:
+            path: /mnt/my_nfs_volumes/snap4city-docker/DataCity-Small/synoptics-conf/config.js
+          name: synoptics-hostpath0
+        - hostPath:
+            path: /mnt/my_nfs_volumes/snap4city-docker/DataCity-Small/synoptics-conf/v2-config.js
+          name: synoptics-hostpath1

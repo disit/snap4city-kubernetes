@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: iotapp-nr2
+  name: iotapp-nr2
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: iotapp-nr2
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: iotapp-nr2
+    spec:
+      nodeSelector:
+          kubernetes.io/hostname: cvgsolvm03 
+      containers:
+        - image: disitlab/snap4city-nodered-adv:v76
+          name: iotapp-nr2
+          ports:
+            - containerPort: 1880
+          resources: {}
+          volumeMounts:
+            - mountPath: /data
+              name: iotapp-nr2-hostpath0
+      restartPolicy: Always
+      volumes:
+        - hostPath:
+            path: /mnt/my_nfs_volumes/snap4city-docker/DataCity-Small/iotapp-nr2
+          name: iotapp-nr2-hostpath0

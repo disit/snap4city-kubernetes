@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: keycloak
+  name: keycloak
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: keycloak
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: keycloak
+    spec:
+      nodeSelector:
+          kubernetes.io/hostname: cvgsolvm03    
+      containers:
+        - args:
+            - -Djboss.socket.binding.port-offset=8
+          env:
+            - name: KEYCLOAK_PASSWORD
+              value: admin
+            - name: KEYCLOAK_USER
+              value: admin
+          image: disitlab/preconf-keycloak:v3
+          name: keycloak
+          ports:
+            - containerPort: 8088
+          resources: {}
+      restartPolicy: Always

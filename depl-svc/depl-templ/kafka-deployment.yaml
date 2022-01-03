@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: kafka
+  name: kafka
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: kafka
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: kafka
+    spec:
+      containers:
+        - env:
+            - name: MY_POD_IP
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.podIP
+            - name: ALLOW_PLAINTEXT_LISTENER
+              value: "yes"
+            - name: KAFKA_CFG_ADVERTISED_LISTENERS
+              value: CLIENT://MY_POD_IP:9092
+            - name: KAFKA_CFG_LISTENERS
+              value: CLIENT://:9092
+            - name: KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP
+              value: CLIENT:PLAINTEXT
+            - name: KAFKA_CFG_ZOOKEEPER_CONNECT
+              value: zookeeper:2181
+            - name: KAFKA_INTER_BROKER_LISTENER_NAME
+              value: CLIENT
+          image: bitnami/kafka:latest
+          name: kafka
+          ports:
+            - containerPort: 9092
+            - containerPort: 9093
+          resources: {}
+          volumeMounts:
+            - mountPath: /bitnami/kafka
+              name: kafka
+      restartPolicy: Always
+      volumes:
+        - name: kafka
+          hostPath:
+            path: /mnt/my_nfs_volumes/snap4city-docker/DataCity-Small/kafka
+          #persistentVolumeClaim:
+          #  claimName: kafka-pv-claim

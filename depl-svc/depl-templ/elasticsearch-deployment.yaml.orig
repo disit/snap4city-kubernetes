@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: elasticsearch
+  name: elasticsearch
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: elasticsearch
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: elasticsearch
+    spec:
+      nodeSelector:
+          kubernetes.io/hostname: cvgsolvm03 
+      containers:
+        - env:
+            - name: ES_JAVA_OPTS
+              value: -Xms96m -Xmx96m
+            - name: discovery.type
+              value: single-node
+          image: elasticsearch:6.8.5
+          name: elasticsearch
+          ports:
+            - containerPort: 9200
+          resources:
+            requests:
+              memory: "100Mi"
+              cpu: "10m"
+            limits:
+              memory: "400Mi"
+              cpu: "250m"
+      restartPolicy: Always
+
