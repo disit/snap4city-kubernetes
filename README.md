@@ -72,14 +72,18 @@ Follow the below steps to deploy the Kubernetes cluster for S4C on Azure multi-n
 
 
 ###Optional-  only to follow if ufw is enabled
+
               sudo ufw status 
+	      
 #if not enable skip the below steps
+
               sudo ufw allow from 10.0.0.0/8 to any port nfs
               sudo ufw allow from any to any port ssh
+	      
 #This can break your ssh, flannel network and other pod communication
 
 
-	On NFS client follow this step
+	#On NFS client follow this step
 
               sudo apt update
               sudo apt install nfs-common
