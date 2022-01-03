@@ -185,9 +185,9 @@ Over /mnt directory this does not work. So you need to choose the host path othe
 19.	 In total 20 pods + 1 orion docker + 1mongo docker and 19 kubesvc should be running.
 
 # Appendix A
-### KUBERNETES INSTALLATION ###########################
-#### Package installation on all nodes #############
-########################################################
+### KUBERNETES INSTALLATION 
+#### Package installation on all nodes 
+
 Reference: https://www.edureka.co/blog/install-kubernetes-on-ubuntu
 ### Step1: Install docker on nodes
 sudo apt-get install -y docker.io
