@@ -2,11 +2,13 @@
 Follow the below steps to deploy the Kubernetes cluster for S4C on Azure multi-node VMs.
 
 # Steps:
-1. Please put changes as per your environment in the clone repo.
+1. Please put changes as per your environment in the cloned repo below.
 
               git clone https://github.com/disit/snap4city-kubernetes.git
+	      cd snap4city-kubernetes
 	
--	Ensure each VM should have all the S4C ports opened individually otherwise it will go in to unwanted chaos or unknown errors. 
+-	Ensure you have cluster of VMs acting and able to communicate each other. 
+-	Each VM should have all the S4C ports opened individually otherwise it will go in to unwanted chaos or unknown errors. 
 -	Following ports should be opened for each VM 
 -	
               22, 443, 1026,80,3306,9200,1880,1881,9092,8088,5601,389,6443,9090,8443,8080,3001-3002,8890,9000,2181,9093,636,1030,1111
@@ -14,6 +16,8 @@ Follow the below steps to deploy the Kubernetes cluster for S4C on Azure multi-n
 -	externalIPs to be replaced in depl-svc
 -	
               sed -i 's/10.1.0.4/master-node-IP/g' *.yaml
+	      #Here Please check the existing Ip used in .yml files. In our case it is 10.1.0.4. 
+	      
 	      
 -	All nodes hostname and /etc/hosts to be changed
 -	
