@@ -114,12 +114,12 @@ cd depl-svc
 
 14.	Create the required directories, first run ./setup_dir.sh
 
-chmod a+x setup_dir.sh
-cd dashboard/run_first
+             chmod a+x setup_dir.sh
+             cd dashboard/run_first
 #First priority is to deploy dependent service i.e. DB, Ldap and keycloak
 
               kubectl create -f .
-cd ../
+             cd ../
 #Now to deploy dashboard services first.
 kubectl create -f .
 cd ../
