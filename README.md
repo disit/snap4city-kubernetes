@@ -142,14 +142,18 @@ Over /mnt directory this does not work. So you need to choose the host path othe
               chmod a+x setup_dir.sh
               cd dashboard/run_first
 	      
-#First priority is to deploy dependent service i.e. DB, Ldap and keycloak
+	#First priority is to deploy dependent service i.e. DB, Ldap and keycloak
 
               kubectl create -f .
               cd ../
-#Now to deploy dashboard services first.
+	      
+	#Now to deploy dashboard services first.
+
               kubectl create -f .
               cd ../
-#Now all other services to be deployed.
+	      
+	#Now all other services to be deployed.
+
               kubectl create -f .
 
 15.	Then all deployments and services files and count them
