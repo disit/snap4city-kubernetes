@@ -226,43 +226,50 @@ sudo kubeadm token create <TOKEN-FROM-GENERATE-STEP> --ttl 1h --print-join-comma
 
 ### Delete or cleanup of Kubernetes cluster
 #References: https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/create-cluster-kubeadm/
-##Remove the node
-##Talking to the control-plane node with the appropriate credentials, run:
-kubectl delete node <node name>
-kubectl drain <node name> --delete-emptydir-data --force --ignore-daemonsets
 
-kubeadm reset 
-rm -r /etc/cni/net.d
-etcdctl del "" --prefix
-systemctl restart kubelet docker   
-### Forceful deletion######
-##Reference https://containersolutions.github.io/runbooks/posts/kubernetes/pod-stuck-in-terminating-state/#solution-b
-kubectl delete pod --grace-period=0 --force $(kubectl get pods | awk '{print $1}')
-journalctl -xeu kubelet > error.log
-#now check wht is the issue
+	kubectl delete node <node name>
+	kubectl drain <node name> --delete-emptydir-data --force --ignore-daemonsets
+	kubeadm reset 
+	rm -r /etc/cni/net.d
+	etcdctl del "" --prefix
+	systemctl restart kubelet docker   
+
+### Forceful deletion
+Reference: https://containersolutions.github.io/runbooks/posts/kubernetes/pod-stuck-in-terminating-state/#solution-b
+
+	kubectl delete pod --grace-period=0 --force $(kubectl get pods | awk '{print $1}')
+	journalctl -xeu kubelet > error.log
+	
 #The reset process does not reset or clean up iptables rules or IPVS tables. If you wish to reset iptables, you must do so manually:
-iptables -F && iptables -t nat -F && iptables -t mangle -F && iptables -X
+
+	iptables -F && iptables -t nat -F && iptables -t mangle -F && iptables -X
+	
 #you want to reset the IPVS tables, you must run the following command:
-ipvsadm -C
+
+	ipvsadm -C
 
 #Now remove the node:
 
-kubectl delete node <node name>
-sudo docker info | grep -i cgroup
-kubeadm join 10.1.0.4:6443 --token op0p62.5nx21jwr57uy0ypd --discovery-token-ca-cert-hash sha256:f318bbbb9a3b4cfa86935f287fc1ac242b4f870f611f7d8ba933169ee799cbcd
+	kubectl delete node <node name>
+	sudo docker info | grep -i cgroup
+	kubeadm join 10.1.0.4:6443 --token op0p62.5nx21jwr57uy0ypd --discovery-token-ca-cert-hash sha256:f318bbbb9a3b4cfa86935f287fc1ac242b4f870f611f7d8ba933169ee799cbcd
 
-#########Delete or cleanup of Kubernetes cluster############
-##References: 
+### Delete or cleanup of Kubernetes cluster
+References: 
 https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/create-cluster-kubeadm/
+
 #Remove the node
 #Talking to the control-plane node with the appropriate credentials, run:
-kubectl delete node <node name>
-kubectl drain <node name> --delete-emptydir-data --force --ignore-daemonsets
-kubeadm reset 
-rm -r /etc/cni/net.d
-etcdctl del "" --prefix
-systemctl restart kubelet docker   or reboot system
 
+	kubectl delete node <node name>
+	kubectl drain <node name> --delete-emptydir-data --force --ignore-daemonsets
+	kubeadm reset 
+	rm -r /etc/cni/net.d
+	etcdctl del "" --prefix
+	systemctl restart kubelet docker   or reboot system
+
+### NFS Related
+References:	
 https://levelup.gitconnected.com/how-to-use-nfs-in-kubernetes-cluster-method-1-4071724af37c
 
 https://levelup.gitconnected.com/how-to-use-nfs-in-kubernetes-cluster-storage-class-ed1179a83817
@@ -271,19 +278,15 @@ https://levelup.gitconnected.com/how-to-use-nfs-in-kubernetes-cluster-storage-cl
 https://levelup.gitconnected.com/how-to-use-nfs-in-kubernetes-cluster-method-2-73df4efb4c00
 ### Delete stuck PVC in terminating state
 https://veducate.co.uk/kubernetes-pvc-terminating/
-kubectl get volumeattachment
-kubectl patch pvc {PVC_NAME} -p '{"metadata":{"finalizers":null}}'
+
+	kubectl get volumeattachment
+	kubectl patch pvc {PVC_NAME} -p '{"metadata":{"finalizers":null}}'
+
 ### disk related and to see where the drive is mounted on
-sudo fdisk -l
-df -ha /dev/sdb
-df -ha /dev/sd*
-df -h /mnt/my_nfs_volumes/
 
-### How to troubleshoot the ws-server ?
-Used for two way communication between client and server or server and server or between service and service. Basically two way communication between any two parties. Therefore it can act as a proxy server (but biderectional) also.
-- used for asynchronous communication between client and server. Means generally client needs to poll the server, however using websocket connection server can send update notification to client. 
-- wssocket started with http GET connection and then gets update or upgrade to ws protocol.
-Solution (https://www.thenerdary.net/post/24889968081/debugging-websockets-with-curl)
+	sudo fdisk -l
+	df -ha /dev/sdb
+	df -ha /dev/sd*
+	df -h /mnt/my_nfs_volumes/
 
-https://datatracker.ietf.org/doc/html/rfc6455
 
