@@ -39,8 +39,9 @@ Refer Appendix A.
 
 7.	Setup NFS server on master node /mnt/my_nfs_volumes and share nfs with all nodes
  	
-	On NFS Server 
 
+	On NFS Server 
+	
               sudo apt update
               sudo apt install nfs-common
               sudo apt install nfs-kernel-server
