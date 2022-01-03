@@ -137,16 +137,16 @@ Over /mnt directory this does not work. So you need to choose the host path othe
               cp update-ontology.sh /mnt/my_nfs_volumes/snap4city-docker/DataCity-Small/servicemap-conf/  
               kubectl exec --stdin --tty virtuoso-kb-779848b595-s6lhq -- /bin/bash
 
-17.	Please execute the following commands inside the virtuoso pod:
-               cd /root/servicemap/
-               source update-ontology.sh localhost
-               isql-v localhost dba dba /root/servicemap/servicemap.vt
-               isql-v localhost dba dba /root/servicemap/servicemap-dbpedia.vt
-               curl -H 'Content-Type: application/json' -X PUT 'http://elasticsearch:9200/iotdata-organization' -d @mapping_Sensors-ETL-IOT-v3.json
+17.	Please execute the following commands inside the virtuoso pod
+              cd /root/servicemap/
+              source update-ontology.sh localhost
+              isql-v localhost dba dba /root/servicemap/servicemap.vt
+              isql-v localhost dba dba /root/servicemap/servicemap-dbpedia.vt
+              curl -H 'Content-Type: application/json' -X PUT 'http://elasticsearch:9200/iotdata-organization' -d @mapping_Sensors-ETL-IOT-v3.json
               
 
 18.	Now deploy the dcompose-svc
-                docker-compose -f orion-compose.yaml
+              docker-compose -f orion-compose.yaml
 19.	 In total 20 pods + 1 orion docker + 1mongo docker and 19 kubesvc should be running.
 
 # Appendix A
