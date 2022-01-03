@@ -2,7 +2,7 @@
 Follow the below steps to deploy the Kubernetes cluster for S4C on Azure multi-node VMs.
 
 # Steps:
-## Environment changes are:
+1. Please put changes as per your environment
 -	Ensure each VM should have all the S4C ports opened individually otherwise it will go in to unwanted chaos or unknown errors. Following ports should be opened for each VM in addition to 22, 443
 1026,80,3306,9200,1880,1881,9092,8088,5601,389,6443,9090,8443,8080,3001-3002,8890,9000,2181,9093,636,1030,1111
 -	externalIPs to be replaced in depl-svc
