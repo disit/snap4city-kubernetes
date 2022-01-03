@@ -39,9 +39,9 @@ Refer Appendix A.
 Refer Appendix A.
 
 7.	Setup NFS server on master node /mnt/my_nfs_volumes and share nfs with all nodes
-===========================================================
+===
 On NFS Server 
-============================================================
+====
 sudo apt update
 sudo apt install nfs-common
 sudo apt install nfs-kernel-server
@@ -62,9 +62,9 @@ sudo ufw allow from 10.0.0.0/8 to any port nfs
 sudo ufw allow from any to any port ssh
 #This can break your ssh, flannel network and other pod communication
 
-===================================
+====
 On NFS client follow this step
-===================================
+=====
 sudo apt update
 sudo apt install nfs-common
 sudo mkdir -p /mnt/my_nfs_volumes
@@ -185,9 +185,9 @@ sudo apt-get install -y kubelet kubeadm kubectl
 10.1.0.6 kube-node2
 
 
-### On masternode only###############
+### On masternode only
 
-#### With Flannel network############
+#### With Flannel network
 sudo kubeadm init --apiserver-advertise-address=10.1.0.4 --pod-network-cidr=10.244.0.0/16
 kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
 kubeadm join 10.1.0.4:6443 --token bgdxgs.ap7krw8j1h5t8uwo \
@@ -204,8 +204,7 @@ kubectl get deployment
 kubectl get pod -o wide #to check on which node the pod is deployed
 kubectl delete deployment nginx
 
-
-#### Extra Commands################
+#### Extra Commands
 ======================Token recreate and certificate ========================
 sudo kubeadm token create
 sudo kubeadm token list
@@ -220,8 +219,8 @@ sudo kubeadm token create <TOKEN-FROM-GENERATE-STEP> --ttl 1h --print-join-comma
 #----#kubectl taint nodes --all node-role.kubernetes.io/master-
 
 
-######################Delete or cleanup of Kubernetes cluster##########
-##References: https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/create-cluster-kubeadm/
+### Delete or cleanup of Kubernetes cluster
+#References: https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/create-cluster-kubeadm/
 ##Remove the node
 ##Talking to the control-plane node with the appropriate credentials, run:
 kubectl delete node <node name>
