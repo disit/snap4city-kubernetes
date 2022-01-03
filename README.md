@@ -2,11 +2,21 @@
 Follow the below steps to deploy the Kubernetes cluster for S4C on Azure multi-node VMs.
 
 # Steps:
-1. Please put changes as per your environment
--	Ensure each VM should have all the S4C ports opened individually otherwise it will go in to unwanted chaos or unknown errors. Following ports should be opened for each VM in addition to 22, 443, 1026,80,3306,9200,1880,1881,9092,8088,5601,389,6443,9090,8443,8080,3001-3002,8890,9000,2181,9093,636,1030,1111
+1. Please put changes as per your environment in the clone repo.
+
+              git clone https://github.com/disit/snap4city-kubernetes.git
+	
+-	Ensure each VM should have all the S4C ports opened individually otherwise it will go in to unwanted chaos or unknown errors. 
+-	Following ports should be opened for each VM 
+-	
+              22, 443, 1026,80,3306,9200,1880,1881,9092,8088,5601,389,6443,9090,8443,8080,3001-3002,8890,9000,2181,9093,636,1030,1111
+	   
 -	externalIPs to be replaced in depl-svc
+-	
               sed -i 's/10.1.0.4/master-node-IP/g' *.yaml
+	      
 -	All nodes hostname and /etc/hosts to be changed
+-	
               10.1.0.4 kube-master
               10.1.0.5 kube-node1
               10.1.0.6 kube-node2
@@ -15,32 +25,33 @@ Follow the below steps to deploy the Kubernetes cluster for S4C on Azure multi-n
                     below given line value which is used to be http://orion:1026 by default:
                               - name: spring.orionbroker_endpoint
                                  value: http://10.1.0.4:1026
+				 
 -	Also change the NodeSelector hostname values in yaml matching to your hostname of the node.
 
 2.	Docker on all nodes with cfgroups fs driver settled
 
-Refer Appendix A.
+	Refer Appendix A.
 
 3.	Kubernetes cluster on all nodes (kubeadm, kubectl, kublet) 
 
-Refer Appendix A.
+	Refer Appendix A.
 
 4.	Flannel network on 10.244.x.x
 
-Refer Appendix A.
+	Refer Appendix A.
 
 5.	Initiate Cluser on Master Node Kube init with cidr
 
-Refer Appendix A.
+	Refer Appendix A.
 
 6.	Join kube worker nodes with token and certificate.
 
-Refer Appendix A.
+	Refer Appendix A.
 
 7.	Setup NFS server on master node /mnt/my_nfs_volumes and share nfs with all nodes
  	
 
-	On NFS Server 
+              #On NFS Server 
 	
               sudo apt update
               sudo apt install nfs-common
