@@ -38,9 +38,9 @@ Refer Appendix A.
 Refer Appendix A.
 
 7.	Setup NFS server on master node /mnt/my_nfs_volumes and share nfs with all nodes
-===
-On NFS Server 
-===
+ 	
+	On NFS Server 
+
               sudo apt update
               sudo apt install nfs-common
               sudo apt install nfs-kernel-server
@@ -61,14 +61,16 @@ On NFS Server
               sudo ufw allow from any to any port ssh
 #This can break your ssh, flannel network and other pod communication
 
-====
-On NFS client follow this step
-=====
+
+	On NFS client follow this step
+
               sudo apt update
               sudo apt install nfs-common
               sudo mkdir -p /mnt/my_nfs_volumes
               sudo mount 10.1.0.4:/mnt/my_nfs_volumes /mnt/my_nfs_volumes
+	      
 #verify If they have mounted or not
+
               df -h /mnt/my_nfs_volumes/
 
 #on all nfs client nodes /etc/exports
@@ -79,6 +81,7 @@ On NFS client follow this step
 
 
 8.	Clone S4C on master server
+
               cd ~/
               git clone git clone https://github.com/disit/snap4city-docker.git
 
@@ -106,6 +109,7 @@ On NFS client follow this step
 
 ### Note: 
 Over /mnt directory this does not work. So you need to choose the host path other than mounted by nfs.
+
 13.	Now deploy Kubernetes deployment and service templates
 
               cd depl-svc
