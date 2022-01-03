@@ -1,14 +1,14 @@
 # snap4city-kubernetes
 Follow the below steps to deploy the Kubernetes cluster for S4C on Azure multi-node VMs.
 
-# Steps:
+# Follow the below Steps:
 1. Please put changes as per your environment in the cloned repo below.
 
               git clone https://github.com/disit/snap4city-kubernetes.git
-	      cd snap4city-kubernetes
+	        cd snap4city-kubernetes
 	      
 	
--	Ensure you have cluster of VMs acting and able to communicate each other. 
+-	Ensure you have cluster of VMs running and able to communicate each other. 
 -	Each VM should have all the S4C ports opened individually otherwise it will go in to unwanted chaos or unknown errors. 
 -	Following ports should be opened for each VM 
 -	
