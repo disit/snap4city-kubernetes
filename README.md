@@ -116,10 +116,11 @@ Follow the below steps to deploy the Kubernetes cluster for S4C on Azure multi-n
               cd /mnt/my_nfs_volumes/ snap4city-docker/ DataCity-Small/
               sudo ./setup.sh
 
-11.	copy kube-s4c-working.tar in master node and untar and you will see three folder:
+11.	Now at master node go to your cloned repo above:
 
-              tar zxvf kube-s4c-working.tar 
-              cd kube-s4c; ls
+              cd snap4city-kubernetes 
+              ls
+	      #It will show you below folders
               dcompose-svc  depl-svc  pv-claim
 
 12.	First run the kubectl create in “pvclaim” after doing the required changes of hostpath as per your cluster naming. 
@@ -140,6 +141,7 @@ Over /mnt directory this does not work. So you need to choose the host path othe
 
               chmod a+x setup_dir.sh
               cd dashboard/run_first
+	      
 #First priority is to deploy dependent service i.e. DB, Ldap and keycloak
 
               kubectl create -f .
