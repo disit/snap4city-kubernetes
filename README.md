@@ -125,19 +125,21 @@ Over /mnt directory this does not work. So you need to choose the host path othe
 #Now all other services to be deployed.
               kubectl create -f .
 
-15.	Then all deployments and services files and count them 
-              kubectl get depl | grep -v NAME |wc -l
+15.	Then all deployments and services files and count them
+
+	           kubectl get depl | grep -v NAME |wc -l
               20
               kubectl get svc | grep -v NAME |wc -l
               19
-16.	Now after all services are up and running. Please copy the update-ontology.sh from depl-svc folder to 
-              /mnt/my_nfs_volumes/snap4city-docker/DataCity-Small/servicemap-conf/  
-    and then open the virtuoso pod in interactive mode. 
-
+              
+16.	 Now after all services are up and running. Please copy the update-ontology.sh from depl-svc folder to 
+    /mnt/my_nfs_volumes/snap4city-docker/DataCity-Small/servicemap-conf/ and then open the virtuoso pod in interactive mode. 
+    
               cp update-ontology.sh /mnt/my_nfs_volumes/snap4city-docker/DataCity-Small/servicemap-conf/  
               kubectl exec --stdin --tty virtuoso-kb-779848b595-s6lhq -- /bin/bash
+              
+17. Please execute the following commands inside the virtuoso pod
 
-17.	Please execute the following commands inside the virtuoso pod
               cd /root/servicemap/
               source update-ontology.sh localhost
               isql-v localhost dba dba /root/servicemap/servicemap.vt
@@ -146,7 +148,9 @@ Over /mnt directory this does not work. So you need to choose the host path othe
               
 
 18.	Now deploy the dcompose-svc
+
               docker-compose -f orion-compose.yaml
+              
 19.	 In total 20 pods + 1 orion docker + 1mongo docker and 19 kubesvc should be running.
 
 # Appendix A
